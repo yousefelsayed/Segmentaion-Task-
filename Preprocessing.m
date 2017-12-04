@@ -1,0 +1,58 @@
+function [ output_img,Vendor ] = Preprocessing( input_img )
+RedColor = 0;
+GreenColor = 0;
+OrangeColor = 0;
+Vendor=input_img;
+[H W l] = size(input_img);
+for i=1:H
+    for j=1:W
+        if(input_img(i,j,1) <=225 &&input_img(i,j,2) <=244 &&input_img(i,j,3) <=5)
+            GreenColor=GreenColor+1;
+        end
+        if(input_img(i,j,1) <=244 &&input_img(i,j,2) <=185 &&input_img(i,j,3) <=3)
+           OrangeColor=OrangeColor+1; 
+        end
+        
+        if(input_img(i,j,1) <=202 &&input_img(i,j,2) <=75 &&input_img(i,j,3) <=56)
+           RedColor=RedColor+1; 
+        end
+        
+        
+    end
+end
+for i=1:H
+    for j=1:W
+        if(input_img(i,j,1) <=210 ||input_img(i,j,2)<=210||input_img(i,j,3) <=210 )
+            input_img(i,j,1)=0;
+            input_img(i,j,2)=0;
+            input_img(i,j,3)=0;
+        end
+    end
+end
+output_img=rgb2gray(input_img);
+%imshow(input_img);
+fff = im2bw(output_img);
+img=fff;
+I=wiener2(img);
+output_img=I;
+OrangeColor
+RedColor
+GreenColor
+if(OrangeColor > RedColor && OrangeColor >GreenColor)
+    fprintf('Mobinil');
+elseif(RedColor> GreenColor && RedColor> OrangeColor)
+    fprintf('Vodafone');
+else
+    fprintf('Etisalat');
+end
+
+% if(colorWhite>colorBlack)
+%     imgouter = imcomplement(output_img);
+% else
+%     imgouter = output_img;
+% end
+% output_img=imgouter;
+%imshow(output_img);
+
+end
+
